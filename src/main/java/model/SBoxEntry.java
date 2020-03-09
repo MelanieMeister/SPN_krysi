@@ -6,16 +6,14 @@ public class SBoxEntry {
     private String xAsBit;
     private String sxAsBit;
 
-    public SBoxEntry(String x, String sx) {
-        if(x.equals("11")){
-            System.out.println("");
-        }
+    public SBoxEntry(String x, String sx, String formatter) {
+
         this.x = x;
         this.sx = sx;
-        this.xAsBit = ConverterHelper.convertBinaryToHex(x);
+        this.xAsBit = ConverterHelper.convertBinaryToHex(x, formatter);
 
-        String number = ConverterHelper.convertBinaryToHex(sx);
-        this.sxAsBit = ConverterHelper.formatBitChain(number);
+        String number = ConverterHelper.convertBinaryToHex(sx, formatter);
+        this.sxAsBit = ConverterHelper.formatBitChain(number, formatter);
     }
 
     public String getxAsBit() {

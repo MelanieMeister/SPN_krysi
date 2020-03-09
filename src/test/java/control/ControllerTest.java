@@ -29,6 +29,12 @@ public class ControllerTest {
         String key = "01101000";
 
         Assert.assertEquals("10001010", controller.xOr(value, key));
+
+        String value2 = "100011101110101011101000010000001100111011001010110110101100001011000110110100001110100001000011";//96
+        String key2 = "1000100101000";
+        String expectedResult = "100011101110101011101000010000001100111011001010110110101100001011000110110100001111100101101011";//13
+
+        Assert.assertEquals(expectedResult, controller.xOr(value2, key2));
     }
 
 }

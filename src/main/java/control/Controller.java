@@ -11,13 +11,23 @@ public class Controller {
         char[] keyRoundChar = keyRound.toCharArray();
 
         String newValue = "";
+        int difference = value.length() - keyRound.length();
+
+        for(int i=0; i<difference; i++){
+            newValue = newValue + textChar[i];
+        }
 
         for(int i=0; i<keyRound.length();i++){
-            if(xOr(textChar[i], keyRoundChar[i])){
-                newValue = newValue + "1";
-            }else{
-                newValue = newValue + "0";
+            try{
+                if(xOr(textChar[i+difference], keyRoundChar[i])){
+                    newValue = newValue + "1";
+                }else{
+                    newValue = newValue + "0";
+                }
+            }catch (ArrayIndexOutOfBoundsException e){
+                System.out.println();
             }
+
         }
         return newValue;
     }

@@ -5,11 +5,11 @@ public class BitPermutationEntry {
     String betaX;
     String xAsBit;
     String betaXAsBit;
-    public BitPermutationEntry(String x, String betaX) {
+    public BitPermutationEntry(String x, String betaX, String formatter) {
         this.x = x;
         this.betaX = betaX;
-        this.xAsBit =ConverterHelper.convertHexToBinaryAndFormat(x);
-        this.betaXAsBit=ConverterHelper.convertHexToBinaryAndFormat(betaX);
+        this.xAsBit =ConverterHelper.convertHexToBinaryAndFormat(x, formatter);
+        this.betaXAsBit=ConverterHelper.convertHexToBinaryAndFormat(betaX,formatter);
     }
 
     public String getX() {
