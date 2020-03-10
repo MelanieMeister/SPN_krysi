@@ -58,6 +58,7 @@ public class PresentationModel {
     public String createCTRRound(String text, boolean lastRound) {
         String stringPermutation = text;
         for (int i = 0; i < getR(); i++) {
+            System.out.print(i);
             //get the key (k0 - kr)
             String currentKey = keys.get(i);
 
@@ -67,11 +68,14 @@ public class PresentationModel {
             //convert it with the S-Box
             String sBoxConverted = convertWithSBox(eXORk);
 
+            // check if not last round
             if (i != (getR() - 1)) {
                 //convert it according to the bitPermutation
                 stringPermutation = convertWithBitPermutation(sBoxConverted);
-
                // System.out.println(stringPermutation);
+            } else {
+                //key xOR text  (k xOr text)
+                stringPermutation = controller.xOr(sBoxConverted, currentKey);
             }
         }
 
@@ -83,19 +87,20 @@ public class PresentationModel {
      * @return
      */
     public String convertWithBitPermutation(String value) {
-        String newValue = "";
-        //generate a list where each value has 4 digits (e.g. 0000)
-        List<String> bitBlocks = ConverterHelper.splitInBitBlock(value, bitPermutationBlockLength);
-        for (String bit : bitBlocks) {
-            //convert bit to decimal (e.g. '1001' to 9)
-            String decValue = ConverterHelper.convertBinaryToDec(bit, getBitFormatter());
-            //search the BitPermutation by x-value
-            BitPermutationEntry e = getBitPermutationByX(decValue);
-            //add the x-value (as bit) to the new value
-            newValue = newValue + e.getBetaXAsBit();
-        }
+        int length = Integer.parseInt(String.valueOf(value.length()));
+        char[] z = new char[length];
 
-        return newValue;
+        char[] charArray = value.toCharArray();
+        // for each char of value string
+        for (int i = 0; i < charArray.length; i++) {
+            char c = charArray[i];
+            // get bit permutation value
+            BitPermutationEntry e = getBitPermutationByX(Integer.toString(i));
+            // set new value at position
+            z[Integer.parseInt(e.betaX)] = c;
+        }
+        // return char array as string
+        return String.valueOf(z);
     }
 
     /**

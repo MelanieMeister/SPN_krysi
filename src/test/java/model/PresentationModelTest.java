@@ -112,11 +112,12 @@ public class PresentationModelTest {
     public void createCTRRoundByExample() {
         PresentationModel model = new PresentationModel();
         model.init();
-        String preparedMessage = Encrypter.encrypt("Gut gemacht!");
+        String t = model.createCTRRound("0001001010001111", false);
 
 
-        String v = model.createCTRRound(preparedMessage, true);
-        System.out.println(v);
+
+        //String v = model.createCTRRound(preparedMessage, true);
+        //System.out.println(v);
 
     }
 
