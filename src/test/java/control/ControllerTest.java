@@ -1,5 +1,7 @@
 package control;
 
+import model.ConverterHelper;
+import model.PresentationModel;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -36,5 +38,12 @@ public class ControllerTest {
 
         Assert.assertEquals(expectedResult, controller.xOr(value2, key2));
     }
+
+    @Test
+    public void testCalculateModulo() {//modulo
+//        assertEquals("1110",Controller.modulo("1110"));
+//        assertEquals("0000",Controller.modulo("0000"));
+    }
+
 
 }

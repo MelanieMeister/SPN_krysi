@@ -39,115 +39,32 @@ public class PresentationModelTest {
         Assert.assertEquals("A", model.getSBoxEntryByX("1010").getX());
         Assert.assertEquals("3", model.getSBoxEntryByX("0011").getX());
     }
-
-    @Test
-    public void convertWithBitPermutation() {
-        PresentationModel model = new PresentationModel();
-        model.init();
-        String input = "1001 1110 1010 1111 0000 1010 0001 1100";
-        String output = "0110 1011 1010 1111 0000 1010 0100 0011";
-        String newValue = model.convertWithBitPermutation(input.replaceAll(" ", ""));
-
-        Assert.assertEquals(output.replaceAll(" ", ""), newValue);
-    }
+    
     @Test
     public void createSPNTest() {
         PresentationModel model = new PresentationModel();
         model.setKey("0001 0001 0010 1000 1000 1100 0000 0000".replaceAll(" ",""));
         model.init();
-        String t = model.createSPN("0001 0010 1000 1111".replaceAll(" ",""), false);
+        String t = model.createSPN("0001 0010 1000 1111".replaceAll(" ",""));
 
 
         Assert.assertEquals("1010 1110 1011 0100".replaceAll(" ",""), t);
     }
+    @Test
+    public void createCTRTest() {
+        PresentationModel model = new PresentationModel();
+        model.init();
+        String t = model.createSPN("0001 0010 1000 1111".replaceAll(" ",""));
 
-//    @Test
-//    public void createCTRRound() {
-//        PresentationModel model = new PresentationModel();
-//
-//        model.setR(2);
-//        String[] sBoxValues2 = {"0", "2", "1", "3"};
-//        model.setsBox(initSBox("%02d", sBoxValues2));
-//        model.setPlainText("0010");
-//        model.setBlockLength(2);
-//        model.setBitPermutationBlockLength(1);
-//        model.setFormatter("%02d");
-//        model.setBitFormatter("%01d");
-//        model.setBitPermutationBlockLength(1);
-//
-//        int[] bitPermutationValue2 = {1, 0, 3, 2};
-//        model.setBitPermutation(initBitPermutation("%01d", bitPermutationValue2));
-//        List<String> keys = new ArrayList<>();
-//        model.setKey("0010".replaceAll(" ", ""));
-//
-//        keys.add("1000".replaceAll(" ", ""));
-//        keys.add("1011".replaceAll(" ", ""));
-//        keys.add("1000".replaceAll(" ", ""));
-//        model.setKeys(keys);
-//
-//
-//        String value = model.createSPN(model.getPlainText(), false);
-//
-//    }
-//
-//    @Test
-//    public void createCTRRound2() {
-//        PresentationModel model = new PresentationModel();
-//
-//        String x = "0001 0010 1000 1111".replaceAll(" ", "");
-//        String y = "1010 1110 1011 0100".replaceAll(" ", "");
-//        String key = "0001 0001 0010 1000 1000 1100 0000 0000".replaceAll(" ", "");
-//
-//
-//        String bitString = Encrypter.fillBitString(x);
-//        model.setKey(key);
-//
-//
-//        model.init();
-//        List<String> keys = model.getKeys();
-//        Assert.assertEquals(keys.get(0), "0001 0001 0010 1000 ".replaceAll(" ", ""));
-//        Assert.assertEquals(keys.get(1), "0001 0010 1000 1000 ".replaceAll(" ", ""));
-//        Assert.assertEquals(keys.get(2), "0010 1000 1000 1100  ".replaceAll(" ", ""));
-//        Assert.assertEquals(keys.get(3), "1000 1000 1100 0000    ".replaceAll(" ", ""));
-//        Assert.assertEquals(keys.get(4), "1000 1100 0000 0000 ".replaceAll(" ", ""));
-//
-//
-//        String v = model.createSPN(bitString, true);
-//        Assert.assertEquals(y, v);
-//
-//    }
-//
-//
+        Assert.assertEquals("1111110110100110", t);
+    }
 
     @Test
-    public void createCTRRoundByExample2() {
+    public void dte(){
         PresentationModel model = new PresentationModel();
-        String preparedMessage = Encrypter.encrypt("Gut gemacht");
-
         model.init();
-        String t = model.createSPN(preparedMessage, false);
-
-
-        Assert.assertEquals("1010 1110 1011 0100".replaceAll(" ",""), t);
-
-        //String v = model.createSPN(preparedMessage, true);
-        //System.out.println(v);
-
+        model.decrypt();
     }
-    private List<SBoxEntry> initSBox(String formatter, String... value) {
-        List<SBoxEntry> sBox = new ArrayList<>();
-
-        for (int i = 0; i < value.length; i++) {
-            sBox.add(new SBoxEntry(i + "", value[i], formatter));
-        }
-
-//        String[] letters = {"A", "B", "C", "D", "E", "F",};
-//        for (int i = 0; i < letters.length; i++) {
-//            sBox.add(new SBoxEntry((letters[i] + ""), value[i]));
-//        }
-        return sBox;
-    }
-
     /**
      * initialize a list with the BitPermutation-values.
      */

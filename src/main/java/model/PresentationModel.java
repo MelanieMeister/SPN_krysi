@@ -9,56 +9,89 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PresentationModel {
+    public static String formatter = "%04d";
+    public static String bitFormatter = "%04d";
     Controller controller = new Controller();
-    String key = "00010001001010001000110000000000";
+    String key = "0011 1010 1001 0100 1101 0110 0011 1111".replaceAll(" ", "");
     List<String> keys = new ArrayList<>();
     List<SBoxEntry> sBox = new ArrayList<>();
     List<BitPermutationEntry> bitPermutation = new ArrayList<>();
-    String mmm = "";
     private int r = 4, n = 4, m = 4, s = 32;
     private int round;
-    private StringProperty cipherText = new SimpleStringProperty("0001001010001111");
-    private StringProperty plainText = new SimpleStringProperty();
+    private StringProperty cipherText = new SimpleStringProperty("00000100110100100000101110111000000000101000111110001110011111110110000001010001010000111010000000010011011001110010101110110000");
     private int blockLength = 4;
     private int bitPermutationBlockLength = 4;
-    private String formatter = "%04d";
-    private String bitFormatter = "%04d";
 
-    public PresentationModel() {
-
-    }
-
+    //init SBox and Permutations and generate key of rounds
     public void init() {
         initSBox();
         initBitPermutation();
 
-        calculateRound();
+        round = calculateCTRRounds(getCipherText());
         this.keys = Encrypter.generateKeysOfRounds(getKey(), r);
-        round = 7;
-
     }
 
-    public void encrypt() {
-        String preparedMessage = Encrypter.encrypt("Gut gemacht");
+    //decrypt the value
+    public String decrypt() {
+        List<String> cipherList = ConverterHelper
+                .splitInBitBlock(getCipherText(), (n * m));
 
-        String chiffreText = preparedMessage;
-        for (int i = 0; i <= round; i++) {
-            String value;
-            if (round == 6) {
-                value = createSPN(chiffreText, true);
-            } else {
-                value = createSPN(chiffreText, false);
+        List<String> spnList = new ArrayList<>();
+        String currentValue = "";
+
+        //CTR Rounds
+        for (int i = 0; i < cipherList.size() - 1; i++) {
+            String cipher = cipherList.get(i);
+            if (i != 0) {
+                cipher = Controller.increment(currentValue);
             }
+            String modResult =
+                    Controller.modulo(cipher);
 
-            chiffreText = value;
+            //convert it with the S-Box
+            String spnConverted = createSPN(modResult);
+
+            spnList.add(spnConverted);
+            currentValue = modResult;
         }
 
+        String plainText = "";
+        for (int i = 0; i < cipherList.size() - 1; i++) {
+            plainText = plainText +
+                    controller.xOr(spnList.get(i), cipherList.get(i + 1));
+        }
+
+        String paddingRemovedString = encode(plainText);
+
+
+        return ConverterHelper.convertBinaryStringToAscii(paddingRemovedString);
     }
 
-    public String createSPN(String text, boolean lastRound) {
+
+    //remove the padding
+    public String encode(String v) {
+        char[] value = v.toCharArray();
+
+        int stopper = 0;
+        for (int i = value.length - 1; i > 0; i--) {
+            char charI = value[i];
+            if (charI == '1') {
+                stopper = i;
+                break;
+            }
+        }
+        String result = "";
+        for (int i = 0; i < stopper; i++) {
+            result = result + value[i];
+        }
+
+        return result;
+    }
+
+    //create one SPN
+    public String createSPN(String text) {
         String stringPermutation = text;
         for (int i = 0; i < getR(); i++) {
-            System.out.print(i);
             //get the key (k0 - kr)
             String currentKey = keys.get(i);
 
@@ -75,7 +108,7 @@ public class PresentationModel {
                 // System.out.println(stringPermutation);
             } else {
                 //key xOR text  (k xOr text)
-                stringPermutation = controller.xOr(sBoxConverted, keys.get(i+ 1));
+                stringPermutation = controller.xOr(sBoxConverted, keys.get(i + 1));
             }
         }
 
@@ -151,7 +184,6 @@ public class PresentationModel {
         return null;
     }
 
-
     /**
      * initialize a list with the SBox-values.
      */
@@ -197,9 +229,9 @@ public class PresentationModel {
     }
 
 
-    private void calculateRound() {
-        //todo: round
-        round = (getCipherText().length() / (n * m));
+    //calculate the number of CTR rounds
+    private int calculateCTRRounds(String s) {
+        return (s.length() / (n * m));
     }
 
     public String getCipherText() {
@@ -214,13 +246,6 @@ public class PresentationModel {
         return cipherText;
     }
 
-    public String getPlainText() {
-        return plainText.get();
-    }
-
-    public void setPlainText(String plainText) {
-        this.plainText.set(plainText);
-    }
 
     public Controller getController() {
         return controller;
@@ -318,9 +343,6 @@ public class PresentationModel {
         this.bitPermutation = bitPermutation;
     }
 
-    public StringProperty plainTextProperty() {
-        return plainText;
-    }
 
     public String getFormatter() {
         return formatter;

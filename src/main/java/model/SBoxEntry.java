@@ -7,7 +7,6 @@ public class SBoxEntry {
     private String sxAsBit;
 
     public SBoxEntry(String x, String sx, String formatter) {
-
         this.x = x;
         this.sx = sx;
         this.xAsBit = ConverterHelper.convertBinaryToHex(x, formatter);

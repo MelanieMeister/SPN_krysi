@@ -37,6 +37,10 @@ public class ConverterHelperTest {
     }
 
     @Test
+    public  void  addZerosTest(){
+        Assert.assertEquals("0000010011010011", ConverterHelper.addZeros("10011010011", 16));
+    }
+    @Test
     public void convertBinaryToHey() {
         Assert.assertEquals("1010",ConverterHelper.convertBinaryToHex("A","%04d"));
         Assert.assertEquals("1011",ConverterHelper.convertBinaryToHex("B","%04d"));
