@@ -45,9 +45,9 @@ public class PresentationModel {
         for (int i = 0; i <= round; i++) {
             String value;
             if (round == 6) {
-                value = createCTRRound(chiffreText, true);
+                value = createSPN(chiffreText, true);
             } else {
-                value = createCTRRound(chiffreText, false);
+                value = createSPN(chiffreText, false);
             }
 
             chiffreText = value;
@@ -55,7 +55,7 @@ public class PresentationModel {
 
     }
 
-    public String createCTRRound(String text, boolean lastRound) {
+    public String createSPN(String text, boolean lastRound) {
         String stringPermutation = text;
         for (int i = 0; i < getR(); i++) {
             System.out.print(i);
@@ -72,7 +72,7 @@ public class PresentationModel {
             if (i != (getR() - 1)) {
                 //convert it according to the bitPermutation
                 stringPermutation = convertWithBitPermutation(sBoxConverted);
-               // System.out.println(stringPermutation);
+                // System.out.println(stringPermutation);
             } else {
                 //key xOR text  (k xOr text)
                 stringPermutation = controller.xOr(sBoxConverted, keys.get(i+ 1));

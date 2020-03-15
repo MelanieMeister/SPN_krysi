@@ -31,5 +31,30 @@ public class Controller {
         }
         return newValue;
     }
+//public String xOr(String value, String keyRound){
+//    char[] textChar = value.toCharArray();
+//    char[] keyRoundChar = keyRound.toCharArray();
+//
+//    String newValue = "";
+//    int rounds = value.length() / keyRound.length();
+//
+//    for(int j=0; j<rounds; j++){
+//        for(int i=0; i<keyRound.length();i++){
+//            try{
+//                if(xOr(textChar[i+ (rounds*j) ], keyRoundChar[i])){
+//                    newValue = newValue + "1";
+//                }else{
+//                    newValue = newValue + "0";
+//                }
+//            }catch (ArrayIndexOutOfBoundsException e){
+//                System.out.println();
+//            }
+//
+//        }
+//    }
+//
+//
+//    return newValue;
+//}
 
 }
