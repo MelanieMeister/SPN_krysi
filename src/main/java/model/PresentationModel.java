@@ -75,7 +75,7 @@ public class PresentationModel {
                // System.out.println(stringPermutation);
             } else {
                 //key xOR text  (k xOr text)
-                stringPermutation = controller.xOr(sBoxConverted, currentKey);
+                stringPermutation = controller.xOr(sBoxConverted, keys.get(i+ 1));
             }
         }
 
